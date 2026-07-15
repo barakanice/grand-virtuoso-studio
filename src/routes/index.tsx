@@ -347,6 +347,13 @@ function Studio() {
                 <Play className="h-4 w-4" /> Playback
               </button>
             </div>
+            <button
+              onClick={() => exportPianoMidi(recEvents.current, bpm, "piano-recording.mid")}
+              disabled={!hasRecording}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-3 py-2 text-sm font-semibold text-accent-foreground disabled:opacity-40"
+            >
+              <Download className="h-4 w-4" /> Export MIDI
+            </button>
             <div className="mt-2 text-xs text-muted-foreground">
               {recording ? "Recording…" : hasRecording ? "Recording ready" : "No recording yet"}
             </div>
