@@ -59,6 +59,15 @@ export function BeatMaker({ onReady, loadedPattern, loadedBpm }: { onReady: () =
   useEffect(() => { Tone.Transport.bpm.value = bpm; }, [bpm]);
   useEffect(() => { Tone.Transport.swing = swing; Tone.Transport.swingSubdivision = "16n"; }, [swing]);
 
+  useEffect(() => {
+    if (loadedPattern && loadedPattern.length === 8) {
+      setPattern(loadedPattern.map((r) => r.slice()));
+    }
+  }, [loadedPattern]);
+  useEffect(() => {
+    if (typeof loadedBpm === "number" && loadedBpm > 0) setBpm(loadedBpm);
+  }, [loadedBpm]);
+
   const tracks: Track[] = [
     { id: "kick", name: "Kick", key: "1", color: "from-orange-500 to-red-600", trigger: (t) => kickRef.current?.triggerAttackRelease("C1", "8n", t) },
     { id: "snare", name: "Snare", key: "2", color: "from-yellow-400 to-orange-500", trigger: (t) => snareRef.current?.triggerAttackRelease("16n", t) },
