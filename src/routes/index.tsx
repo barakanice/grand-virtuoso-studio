@@ -312,7 +312,21 @@ function Studio() {
         )}
 
         {/* Producer / Beat Maker */}
-        {mode === "producer" && <BeatMaker onReady={ensureReady} />}
+        {(mode === "producer" || mode === "ai") && (
+          <BeatMaker onReady={ensureReady} loadedPattern={aiBeat.pattern} loadedBpm={aiBeat.bpm} />
+        )}
+
+        {/* AI Studio panel */}
+        {mode === "ai" && (
+          <AiComposer
+            onLoadSong={(newSong) => {
+              setUserSongs((prev) => [newSong, ...prev.filter((s) => s.id !== newSong.id)].slice(0, 8));
+              setSong(newSong);
+            }}
+            onLoadBeat={(pattern, bpm) => setAiBeat({ pattern, bpm })}
+          />
+        )}
+
 
 
         {/* Piano */}
