@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
   component: Studio,
 });
 
-type Mode = "free" | "learn" | "challenge" | "producer";
+type Mode = "free" | "learn" | "challenge" | "producer" | "ai";
 
 type RecordedEvent = { note: string; t: number; type: "on" | "off" };
 
