@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
-import { buildKeyboard, KEY_MAP, type Note } from "@/lib/notes";
+import { buildKeyboard, KEY_MAP } from "@/lib/notes";
 import { piano } from "@/lib/piano-engine";
+
+// Reverse map: note name -> keyboard letter
+const NOTE_TO_KEY: Record<string, string> = Object.fromEntries(
+  Object.entries(KEY_MAP).map(([k, v]) => [v, k.toUpperCase()]),
+);
 
 type Props = {
   activeNotes: Set<string>;
