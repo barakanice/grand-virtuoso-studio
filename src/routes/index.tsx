@@ -263,10 +263,13 @@ function Studio() {
                 {s.title} <span className="opacity-60">· {s.difficulty}</span>
               </button>
             ))}
-            <div className="ml-auto flex items-center gap-3 text-xs">
+            <div className="ml-auto flex items-center gap-2 text-xs">
               <Stat label="Hits" value={score.hit} />
               <Stat label="Combo" value={score.combo} />
               <Stat label="Best" value={score.best} />
+              <button onClick={teachSong} className="flex items-center gap-1 rounded-lg bg-accent px-3 py-1.5 font-semibold text-accent-foreground">
+                <GraduationCap className="h-3.5 w-3.5" /> Teach
+              </button>
               {!learnPlaying ? (
                 <button onClick={startLearn} className="flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 font-semibold text-primary-foreground">
                   <Play className="h-3.5 w-3.5" /> Start
@@ -276,6 +279,9 @@ function Studio() {
                   <Square className="h-3.5 w-3.5" /> Stop
                 </button>
               )}
+              <button onClick={clearAll} className="flex items-center gap-1 rounded-lg bg-secondary px-3 py-1.5 font-semibold hover:bg-secondary/70">
+                <Square className="h-3.5 w-3.5" /> Clear
+              </button>
             </div>
           </div>
         )}
