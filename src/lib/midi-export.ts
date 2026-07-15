@@ -13,7 +13,8 @@ export function noteNameToMidi(name: string): number {
 }
 
 function download(bytes: Uint8Array, filename: string) {
-  const blob = new Blob([bytes], { type: "audio/midi" });
+  const buf = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
+  const blob = new Blob([buf], { type: "audio/midi" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
