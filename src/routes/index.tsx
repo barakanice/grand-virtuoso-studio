@@ -3,9 +3,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as Tone from "tone";
 import { Piano } from "@/components/Piano";
 import { FallingNotes } from "@/components/FallingNotes";
+import { BeatMaker } from "@/components/BeatMaker";
 import { piano, type InstrumentName } from "@/lib/piano-engine";
 import { SONGS, type Song } from "@/lib/songs";
-import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon } from "lucide-react";
+import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/")({
   component: Studio,
 });
 
-type Mode = "free" | "learn" | "challenge";
+type Mode = "free" | "learn" | "challenge" | "producer";
 
 type RecordedEvent = { note: string; t: number; type: "on" | "off" };
 
@@ -232,6 +233,7 @@ function Studio() {
           <ModeButton icon={<Music className="h-4 w-4" />} label="Free Play" active={mode === "free"} onClick={() => setMode("free")} />
           <ModeButton icon={<GraduationCap className="h-4 w-4" />} label="Learn" active={mode === "learn"} onClick={() => setMode("learn")} />
           <ModeButton icon={<Gamepad2 className="h-4 w-4" />} label="Challenge" active={mode === "challenge"} onClick={() => setMode("challenge")} />
+          <ModeButton icon={<Drum className="h-4 w-4" />} label="Producer" active={mode === "producer"} onClick={() => setMode("producer")} />
           <div className="mx-2 h-6 w-px bg-border" />
           {instruments.map((inst) => (
             <button
@@ -303,6 +305,10 @@ function Studio() {
             />
           </div>
         )}
+
+        {/* Producer / Beat Maker */}
+        {mode === "producer" && <BeatMaker onReady={ensureReady} />}
+
 
         {/* Piano */}
         <div onMouseDown={ensureReady} onTouchStart={ensureReady}>
