@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
-import { buildKeyboard, KEY_MAP, type Note } from "@/lib/notes";
+import { buildKeyboard, KEY_MAP } from "@/lib/notes";
 import { piano } from "@/lib/piano-engine";
+
+// Reverse map: note name -> keyboard letter
+const NOTE_TO_KEY: Record<string, string> = Object.fromEntries(
+  Object.entries(KEY_MAP).map(([k, v]) => [v, k.toUpperCase()]),
+);
 
 type Props = {
   activeNotes: Set<string>;
@@ -83,11 +88,16 @@ export function Piano({ activeNotes, upcomingNotes, onNoteOn, onNoteOff, showLab
                 style={{ minWidth: 40 }}
                 aria-label={k.name}
               >
-                {showLabels && k.name.startsWith("C") && (
-                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-semibold text-black/60">
-                    {k.name}
-                  </span>
-                )}
+                <div className="pointer-events-none absolute inset-x-0 bottom-2 flex flex-col items-center gap-0.5">
+                  {NOTE_TO_KEY[k.name] && (
+                    <span className="rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white shadow">
+                      {NOTE_TO_KEY[k.name]}
+                    </span>
+                  )}
+                  {showLabels && k.name.startsWith("C") && (
+                    <span className="text-[9px] font-semibold text-black/60">{k.name}</span>
+                  )}
+                </div>
               </button>
             );
           })}
@@ -117,7 +127,13 @@ export function Piano({ activeNotes, upcomingNotes, onNoteOn, onNoteOff, showLab
                 } ${upcoming && !active ? "ring-2 ring-inset ring-primary" : ""}`}
                 style={{ left: `${left}px` }}
                 aria-label={k.name}
-              />
+              >
+                {NOTE_TO_KEY[k.name] && (
+                  <span className="pointer-events-none absolute inset-x-0 bottom-1 text-center text-[9px] font-bold text-white/90">
+                    {NOTE_TO_KEY[k.name]}
+                  </span>
+                )}
+              </button>
             );
           })}
         </div>
