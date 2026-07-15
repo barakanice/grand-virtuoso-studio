@@ -6,7 +6,8 @@ import { FallingNotes } from "@/components/FallingNotes";
 import { BeatMaker } from "@/components/BeatMaker";
 import { piano, type InstrumentName } from "@/lib/piano-engine";
 import { SONGS, type Song } from "@/lib/songs";
-import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum } from "lucide-react";
+import { exportPianoMidi } from "@/lib/midi-export";
+import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
