@@ -69,19 +69,6 @@ export function BeatMaker({ onReady }: { onReady: () => Promise<void> }) {
     { id: "crash", name: "Crash", key: "8", color: "from-amber-400 to-yellow-500", trigger: (t) => crashRef.current?.triggerAttackRelease("2n", t, 0.5) },
   ];
 
-  // Keyboard triggers for pads
-  useEffect(() => {
-    const handler = async (e: KeyboardEvent) => {
-      if (e.repeat) return;
-      const idx = tracks.findIndex((t) => t.key === e.key);
-      if (idx === -1) return;
-      await onReady();
-      tracks[idx].trigger(Tone.now());
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const toggleStep = (row: number, step: number) => {
     setPattern((p) => {
