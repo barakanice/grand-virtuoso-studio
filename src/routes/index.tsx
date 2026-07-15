@@ -56,8 +56,7 @@ function Studio() {
   const [aiBeat, setAiBeat] = useState<{ pattern: boolean[][] | null; bpm: number | null }>({ pattern: null, bpm: null });
   const [score, setScore] = useState({ hit: 0, miss: 0, combo: 0, best: 0 });
   const upcomingNotes = useMemo(() => {
-    if (!song || mode !== "learn") return new Set<string>();
-    // highlight next 2 unique notes
+    if (!song || (mode !== "learn" && mode !== "ai")) return new Set<string>();
     return new Set(song.notes.slice(0, 2).map((n) => n.note));
   }, [song, mode]);
 
