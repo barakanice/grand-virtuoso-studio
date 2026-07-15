@@ -20,7 +20,7 @@ export function FallingNotes({ song, playing, onNoteHit, onFinish }: Props) {
   const width = totalWhite * 40;
 
   const [elapsed, setElapsed] = useState(0);
-  const raf = useRef<number>();
+  const raf = useRef<number | null>(null);
   const startRef = useRef<number>(0);
   const firedRef = useRef<Set<number>>(new Set());
 

@@ -46,7 +46,8 @@ class PianoEngine {
       this.synth.dispose();
     }
     const cfg = INSTRUMENT_CONFIG[name] as { poly: "fm" | "am" | "synth" };
-    let voice: typeof Tone.Synth | typeof Tone.FMSynth | typeof Tone.AMSynth = Tone.Synth;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let voice: any = Tone.Synth;
     if (cfg.poly === "fm") voice = Tone.FMSynth;
     if (cfg.poly === "am") voice = Tone.AMSynth;
 
