@@ -237,7 +237,7 @@ export function BeatMaker({ onReady }: { onReady: () => Promise<void> }) {
       </div>
 
       <p className="mt-3 text-[11px] text-muted-foreground">
-        Producer tip: Layer the piano over your beat — record a chord progression in free-play while the sequencer runs. Use keys <span className="font-mono text-foreground">1–8</span> to trigger pads live.
+        Producer tip: Layer the piano over your beat — record a chord progression in free-play while the sequencer runs. Click a pad to trigger a drum live, or paint the grid to build a loop.
       </p>
     </div>
   );
