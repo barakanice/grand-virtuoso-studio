@@ -246,6 +246,12 @@ function Studio() {
               {inst.label}
             </button>
           ))}
+          <button
+            onClick={clearAll}
+            className="ml-auto rounded-lg bg-destructive px-3 py-1.5 text-xs font-bold text-destructive-foreground hover:opacity-90"
+          >
+            Clear All
+          </button>
         </div>
 
         {/* Learn mode song picker + score */}
