@@ -144,6 +144,41 @@ function Studio() {
   };
   const stopLearn = () => setLearnPlaying(false);
 
+  // Auto-play the current song for demonstration (Teach button)
+  const teachTimers = useRef<number[]>([]);
+  const teachSong = async () => {
+    if (!song) return;
+    await ensureReady();
+    teachTimers.current.forEach((id) => clearTimeout(id));
+    teachTimers.current = [];
+    const secPerBeat = 60 / song.bpm;
+    song.notes.forEach((n) => {
+      const startMs = n.time * secPerBeat * 1000;
+      const durMs = n.duration * secPerBeat * 1000;
+      const on = window.setTimeout(() => {
+        piano.playNote(n.note, `${Math.max(0.1, n.duration * secPerBeat)}`, 0.75);
+        setActiveNotes((prev) => new Set(prev).add(n.note));
+      }, startMs);
+      const off = window.setTimeout(() => {
+        setActiveNotes((prev) => {
+          const next = new Set(prev);
+          next.delete(n.note);
+          return next;
+        });
+      }, startMs + durMs);
+      teachTimers.current.push(on, off);
+    });
+  };
+
+  const clearAll = () => {
+    teachTimers.current.forEach((id) => clearTimeout(id));
+    teachTimers.current = [];
+    piano.stopAll();
+    setActiveNotes(new Set());
+    setLearnPlaying(false);
+    setRecording(false);
+  };
+
   const onLearnHit = useCallback((note: string) => {
     // auto-play the note as demo assist
     piano.playNote(note, "8n", 0.7);
@@ -211,6 +246,12 @@ function Studio() {
               {inst.label}
             </button>
           ))}
+          <button
+            onClick={clearAll}
+            className="ml-auto rounded-lg bg-destructive px-3 py-1.5 text-xs font-bold text-destructive-foreground hover:opacity-90"
+          >
+            Clear All
+          </button>
         </div>
 
         {/* Learn mode song picker + score */}
@@ -228,10 +269,13 @@ function Studio() {
                 {s.title} <span className="opacity-60">· {s.difficulty}</span>
               </button>
             ))}
-            <div className="ml-auto flex items-center gap-3 text-xs">
+            <div className="ml-auto flex items-center gap-2 text-xs">
               <Stat label="Hits" value={score.hit} />
               <Stat label="Combo" value={score.combo} />
               <Stat label="Best" value={score.best} />
+              <button onClick={teachSong} className="flex items-center gap-1 rounded-lg bg-accent px-3 py-1.5 font-semibold text-accent-foreground">
+                <GraduationCap className="h-3.5 w-3.5" /> Teach
+              </button>
               {!learnPlaying ? (
                 <button onClick={startLearn} className="flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 font-semibold text-primary-foreground">
                   <Play className="h-3.5 w-3.5" /> Start
@@ -241,6 +285,9 @@ function Studio() {
                   <Square className="h-3.5 w-3.5" /> Stop
                 </button>
               )}
+              <button onClick={clearAll} className="flex items-center gap-1 rounded-lg bg-secondary px-3 py-1.5 font-semibold hover:bg-secondary/70">
+                <Square className="h-3.5 w-3.5" /> Clear
+              </button>
             </div>
           </div>
         )}

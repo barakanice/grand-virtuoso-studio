@@ -127,6 +127,12 @@ class PianoEngine {
     this.eq.mid.value = mid;
     this.eq.high.value = high;
   }
+
+  stopAll() {
+    if (this.synth) this.synth.releaseAll();
+    this.held.clear();
+    this.sustained.clear();
+  }
 }
 
 export const piano = new PianoEngine();

@@ -88,14 +88,14 @@ export function Piano({ activeNotes, upcomingNotes, onNoteOn, onNoteOff, showLab
                 style={{ minWidth: 40 }}
                 aria-label={k.name}
               >
-                <div className="pointer-events-none absolute inset-x-0 bottom-2 flex flex-col items-center gap-0.5">
+                <div className="pointer-events-none absolute inset-x-0 bottom-1.5 flex flex-col items-center gap-0.5">
                   {NOTE_TO_KEY[k.name] && (
-                    <span className="rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white shadow">
+                    <span className="rounded bg-primary/90 px-1.5 py-0.5 text-[10px] font-bold text-primary-foreground shadow">
                       {NOTE_TO_KEY[k.name]}
                     </span>
                   )}
-                  {showLabels && k.name.startsWith("C") && (
-                    <span className="text-[9px] font-semibold text-black/60">{k.name}</span>
+                  {showLabels && (
+                    <span className="text-[9px] font-semibold text-black/50">{k.name}</span>
                   )}
                 </div>
               </button>
