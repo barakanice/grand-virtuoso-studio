@@ -300,7 +300,7 @@ function Studio() {
         )}
 
         {/* Falling notes runway */}
-        {mode === "learn" && (
+        {(mode === "learn" || mode === "ai") && (
           <div className="overflow-x-auto rounded-t-xl">
             <FallingNotes
               song={song}
