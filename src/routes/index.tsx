@@ -306,6 +306,10 @@ function Studio() {
           </div>
         )}
 
+        {/* Producer / Beat Maker */}
+        {mode === "producer" && <BeatMaker onReady={ensureReady} />}
+
+
         {/* Piano */}
         <div onMouseDown={ensureReady} onTouchStart={ensureReady}>
           <Piano
