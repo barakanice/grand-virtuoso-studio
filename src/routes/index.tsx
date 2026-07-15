@@ -4,10 +4,11 @@ import * as Tone from "tone";
 import { Piano } from "@/components/Piano";
 import { FallingNotes } from "@/components/FallingNotes";
 import { BeatMaker } from "@/components/BeatMaker";
+import { AiComposer } from "@/components/AiComposer";
 import { piano, type InstrumentName } from "@/lib/piano-engine";
 import { SONGS, type Song } from "@/lib/songs";
 import { exportPianoMidi } from "@/lib/midi-export";
-import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download } from "lucide-react";
+import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download, Wand2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
