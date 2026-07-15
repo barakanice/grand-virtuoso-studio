@@ -265,7 +265,7 @@ function Studio() {
         {mode === "learn" && (
           <div className="studio-panel flex flex-wrap items-center gap-3 rounded-xl p-3">
             <span className="text-sm font-semibold text-muted-foreground">Song:</span>
-            {SONGS.map((s) => (
+            {[...SONGS, ...userSongs].map((s) => (
               <button
                 key={s.id}
                 onClick={() => { setSong(s); setLearnPlaying(false); }}
