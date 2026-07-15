@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as Tone from "tone";
-import { Play, Square, Trash2, Drum } from "lucide-react";
+import { Play, Square, Trash2, Drum, Download } from "lucide-react";
+import { exportBeatMidi } from "@/lib/midi-export";
 
 type Track = {
   id: string;
@@ -156,6 +157,12 @@ export function BeatMaker({ onReady }: { onReady: () => Promise<void> }) {
           )}
           <button onClick={clear} className="flex items-center gap-1 rounded-lg bg-secondary px-3 py-1.5 text-xs font-semibold hover:bg-secondary/70">
             <Trash2 className="h-3.5 w-3.5" /> Clear
+          </button>
+          <button
+            onClick={() => exportBeatMidi(pattern, tracks.map((t) => t.id), bpm, "beat.mid")}
+            className="flex items-center gap-1 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-accent-foreground"
+          >
+            <Download className="h-3.5 w-3.5" /> Export MIDI
           </button>
           {Object.entries(presets).map(([name, p]) => (
             <button key={name} onClick={() => setPattern(p)} className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-semibold hover:bg-secondary/70">
