@@ -4,10 +4,11 @@ import * as Tone from "tone";
 import { Piano } from "@/components/Piano";
 import { FallingNotes } from "@/components/FallingNotes";
 import { BeatMaker } from "@/components/BeatMaker";
+import { AiComposer } from "@/components/AiComposer";
 import { piano, type InstrumentName } from "@/lib/piano-engine";
 import { SONGS, type Song } from "@/lib/songs";
 import { exportPianoMidi } from "@/lib/midi-export";
-import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download } from "lucide-react";
+import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download, Wand2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/")({
   component: Studio,
 });
 
-type Mode = "free" | "learn" | "challenge" | "producer";
+type Mode = "free" | "learn" | "challenge" | "producer" | "ai";
 
 type RecordedEvent = { note: string; t: number; type: "on" | "off" };
 
@@ -49,12 +50,13 @@ function Studio() {
   const [hasRecording, setHasRecording] = useState(false);
 
   // Learn mode
+  const [userSongs, setUserSongs] = useState<Song[]>([]);
   const [song, setSong] = useState<Song | null>(SONGS[0]);
   const [learnPlaying, setLearnPlaying] = useState(false);
+  const [aiBeat, setAiBeat] = useState<{ pattern: boolean[][] | null; bpm: number | null }>({ pattern: null, bpm: null });
   const [score, setScore] = useState({ hit: 0, miss: 0, combo: 0, best: 0 });
   const upcomingNotes = useMemo(() => {
-    if (!song || mode !== "learn") return new Set<string>();
-    // highlight next 2 unique notes
+    if (!song || (mode !== "learn" && mode !== "ai")) return new Set<string>();
     return new Set(song.notes.slice(0, 2).map((n) => n.note));
   }, [song, mode]);
 
@@ -235,6 +237,7 @@ function Studio() {
           <ModeButton icon={<GraduationCap className="h-4 w-4" />} label="Learn" active={mode === "learn"} onClick={() => setMode("learn")} />
           <ModeButton icon={<Gamepad2 className="h-4 w-4" />} label="Challenge" active={mode === "challenge"} onClick={() => setMode("challenge")} />
           <ModeButton icon={<Drum className="h-4 w-4" />} label="Producer" active={mode === "producer"} onClick={() => setMode("producer")} />
+          <ModeButton icon={<Wand2 className="h-4 w-4" />} label="AI Studio" active={mode === "ai"} onClick={() => setMode("ai")} />
           <div className="mx-2 h-6 w-px bg-border" />
           {instruments.map((inst) => (
             <button
@@ -258,10 +261,10 @@ function Studio() {
         </div>
 
         {/* Learn mode song picker + score */}
-        {mode === "learn" && (
+        {(mode === "learn" || mode === "ai") && (
           <div className="studio-panel flex flex-wrap items-center gap-3 rounded-xl p-3">
             <span className="text-sm font-semibold text-muted-foreground">Song:</span>
-            {SONGS.map((s) => (
+            {[...SONGS, ...userSongs].map((s) => (
               <button
                 key={s.id}
                 onClick={() => { setSong(s); setLearnPlaying(false); }}
@@ -296,7 +299,7 @@ function Studio() {
         )}
 
         {/* Falling notes runway */}
-        {mode === "learn" && (
+        {(mode === "learn" || mode === "ai") && (
           <div className="overflow-x-auto rounded-t-xl">
             <FallingNotes
               song={song}
@@ -308,7 +311,21 @@ function Studio() {
         )}
 
         {/* Producer / Beat Maker */}
-        {mode === "producer" && <BeatMaker onReady={ensureReady} />}
+        {(mode === "producer" || mode === "ai") && (
+          <BeatMaker onReady={ensureReady} loadedPattern={aiBeat.pattern} loadedBpm={aiBeat.bpm} />
+        )}
+
+        {/* AI Studio panel */}
+        {mode === "ai" && (
+          <AiComposer
+            onLoadSong={(newSong) => {
+              setUserSongs((prev) => [newSong, ...prev.filter((s) => s.id !== newSong.id)].slice(0, 8));
+              setSong(newSong);
+            }}
+            onLoadBeat={(pattern, bpm) => setAiBeat({ pattern, bpm })}
+          />
+        )}
+
 
 
         {/* Piano */}

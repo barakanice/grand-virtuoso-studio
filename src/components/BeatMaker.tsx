@@ -13,7 +13,7 @@ type Track = {
 
 const STEPS = 16;
 
-export function BeatMaker({ onReady }: { onReady: () => Promise<void> }) {
+export function BeatMaker({ onReady, loadedPattern, loadedBpm }: { onReady: () => Promise<void>; loadedPattern?: boolean[][] | null; loadedBpm?: number | null }) {
   const [playing, setPlaying] = useState(false);
   const [bpm, setBpm] = useState(90);
   const [swing, setSwing] = useState(0);
@@ -58,6 +58,15 @@ export function BeatMaker({ onReady }: { onReady: () => Promise<void> }) {
   useEffect(() => { if (busRef.current) busRef.current.volume.value = volume; }, [volume]);
   useEffect(() => { Tone.Transport.bpm.value = bpm; }, [bpm]);
   useEffect(() => { Tone.Transport.swing = swing; Tone.Transport.swingSubdivision = "16n"; }, [swing]);
+
+  useEffect(() => {
+    if (loadedPattern && loadedPattern.length === 8) {
+      setPattern(loadedPattern.map((r) => r.slice()));
+    }
+  }, [loadedPattern]);
+  useEffect(() => {
+    if (typeof loadedBpm === "number" && loadedBpm > 0) setBpm(loadedBpm);
+  }, [loadedBpm]);
 
   const tracks: Track[] = [
     { id: "kick", name: "Kick", key: "1", color: "from-orange-500 to-red-600", trigger: (t) => kickRef.current?.triggerAttackRelease("C1", "8n", t) },
