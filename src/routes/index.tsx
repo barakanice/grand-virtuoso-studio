@@ -144,6 +144,41 @@ function Studio() {
   };
   const stopLearn = () => setLearnPlaying(false);
 
+  // Auto-play the current song for demonstration (Teach button)
+  const teachTimers = useRef<number[]>([]);
+  const teachSong = async () => {
+    if (!song) return;
+    await ensureReady();
+    teachTimers.current.forEach((id) => clearTimeout(id));
+    teachTimers.current = [];
+    const secPerBeat = 60 / song.bpm;
+    song.notes.forEach((n) => {
+      const startMs = n.time * secPerBeat * 1000;
+      const durMs = n.duration * secPerBeat * 1000;
+      const on = window.setTimeout(() => {
+        piano.playNote(n.note, `${Math.max(0.1, n.duration * secPerBeat)}`, 0.75);
+        setActiveNotes((prev) => new Set(prev).add(n.note));
+      }, startMs);
+      const off = window.setTimeout(() => {
+        setActiveNotes((prev) => {
+          const next = new Set(prev);
+          next.delete(n.note);
+          return next;
+        });
+      }, startMs + durMs);
+      teachTimers.current.push(on, off);
+    });
+  };
+
+  const clearAll = () => {
+    teachTimers.current.forEach((id) => clearTimeout(id));
+    teachTimers.current = [];
+    piano.stopAll();
+    setActiveNotes(new Set());
+    setLearnPlaying(false);
+    setRecording(false);
+  };
+
   const onLearnHit = useCallback((note: string) => {
     // auto-play the note as demo assist
     piano.playNote(note, "8n", 0.7);
