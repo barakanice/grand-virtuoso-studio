@@ -13,7 +13,7 @@ type Track = {
 
 const STEPS = 16;
 
-export function BeatMaker({ onReady }: { onReady: () => Promise<void> }) {
+export function BeatMaker({ onReady, loadedPattern, loadedBpm }: { onReady: () => Promise<void>; loadedPattern?: boolean[][] | null; loadedBpm?: number | null }) {
   const [playing, setPlaying] = useState(false);
   const [bpm, setBpm] = useState(90);
   const [swing, setSwing] = useState(0);
