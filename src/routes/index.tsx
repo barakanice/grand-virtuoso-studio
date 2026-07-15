@@ -238,6 +238,7 @@ function Studio() {
           <ModeButton icon={<GraduationCap className="h-4 w-4" />} label="Learn" active={mode === "learn"} onClick={() => setMode("learn")} />
           <ModeButton icon={<Gamepad2 className="h-4 w-4" />} label="Challenge" active={mode === "challenge"} onClick={() => setMode("challenge")} />
           <ModeButton icon={<Drum className="h-4 w-4" />} label="Producer" active={mode === "producer"} onClick={() => setMode("producer")} />
+          <ModeButton icon={<Wand2 className="h-4 w-4" />} label="AI Studio" active={mode === "ai"} onClick={() => setMode("ai")} />
           <div className="mx-2 h-6 w-px bg-border" />
           {instruments.map((inst) => (
             <button
