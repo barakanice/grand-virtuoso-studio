@@ -50,8 +50,10 @@ function Studio() {
   const [hasRecording, setHasRecording] = useState(false);
 
   // Learn mode
+  const [userSongs, setUserSongs] = useState<Song[]>([]);
   const [song, setSong] = useState<Song | null>(SONGS[0]);
   const [learnPlaying, setLearnPlaying] = useState(false);
+  const [aiBeat, setAiBeat] = useState<{ pattern: boolean[][] | null; bpm: number | null }>({ pattern: null, bpm: null });
   const [score, setScore] = useState({ hit: 0, miss: 0, combo: 0, best: 0 });
   const upcomingNotes = useMemo(() => {
     if (!song || mode !== "learn") return new Set<string>();
