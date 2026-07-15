@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as Tone from "tone";
-import { Play, Square, Trash2, Drum } from "lucide-react";
+import { Play, Square, Trash2, Drum, Download } from "lucide-react";
+import { exportBeatMidi } from "@/lib/midi-export";
 
 type Track = {
   id: string;
