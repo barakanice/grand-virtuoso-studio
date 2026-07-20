@@ -1,4 +1,5 @@
-import { Midi } from "@tonejs/midi";
+import pkg from "@tonejs/midi";
+const { Midi } = pkg;
 
 // Convert a note name like "C#4" to a MIDI number
 const PC: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
