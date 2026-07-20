@@ -16,7 +16,7 @@ type Props = {
 };
 
 export function Piano({ activeNotes, upcomingNotes, onNoteOn, onNoteOff, showLabels }: Props) {
-  const keys = useMemo(() => buildKeyboard(), []);
+  const keys = useMemo(() => buildKeyboard().filter((k) => NOTE_TO_KEY[k.name]), []);
   const whiteKeys = keys.filter((k) => !k.isBlack);
   const totalWhite = whiteKeys.length;
   const scrollRef = useRef<HTMLDivElement>(null);
