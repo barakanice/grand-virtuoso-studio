@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "virtual-grand-piano-pro-mcp",
+      "version": "0.1.0",
+      "title": "Virtual Grand Piano Pro"
+    },
+    "tools": [
+      {
+        "name": "list_songs",
+        "title": "List built-in songs",
+        "description": "List the built-in learnable songs available in Virtual Grand Piano Pro, with id, title, composer, difficulty, and BPM.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_song",
+        "title": "Get a built-in song",
+        "description": "Return the full note sequence (note, time in beats, duration in beats) for a built-in song by id.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Song id, e.g. 'ode-to-joy', 'twinkle', 'fur-elise'."
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "compose_song",
+        "title": "Compose a song with AI",
+        "description": "Generate an original short piano melody plus an optional 16-step drum pattern from a text idea, style, and mood. Uses Lovable AI. Returns notes in scientific pitch notation with beat-based timing plus drum step indices, ready to load into the piano studio.",
+        "annotations": {
+          "readOnlyHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "prompt": {
+              "type": "string",
+              "description": "Describe the song idea, e.g. 'A hopeful piano intro in C major that builds emotion.'"
+            },
+            "style": {
+              "type": "string",
+              "description": "Musical style, e.g. Cinematic, Lo-Fi, Jazz, Classical, Trap, House, Ambient, Pop Ballad."
+            },
+            "mood": {
+              "type": "string",
+              "description": "Emotional mood, e.g. Happy, Melancholic, Epic, Chill, Dark, Romantic, Energetic, Dreamy."
+            },
+            "wantBeat": {
+              "type": "boolean",
+              "description": "Include a matching 16-step drum pattern. Default true."
+            }
+          },
+          "required": [
+            "prompt"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
