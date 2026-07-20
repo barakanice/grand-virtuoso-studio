@@ -9,8 +9,7 @@ import { piano, type InstrumentName } from "@/lib/piano-engine";
 import { SONGS, type Song } from "@/lib/songs";
 import { exportPianoMidi } from "@/lib/midi-export";
 import { importMidiAsSong } from "@/lib/midi-import";
-import { Upload } from "lucide-react";
-import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download, Wand2 } from "lucide-react";
+import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download, Wand2, Upload } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
