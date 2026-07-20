@@ -8,7 +8,8 @@ import { AiComposer } from "@/components/AiComposer";
 import { piano, type InstrumentName } from "@/lib/piano-engine";
 import { SONGS, type Song } from "@/lib/songs";
 import { exportPianoMidi } from "@/lib/midi-export";
-import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download, Wand2 } from "lucide-react";
+import { importMidiAsSong } from "@/lib/midi-import";
+import { Music, Play, Pause, Square, Circle, Volume2, Sparkles, GraduationCap, Gamepad2, Piano as PianoIcon, Drum, Download, Wand2, Upload } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -275,6 +276,27 @@ function Studio() {
                 {s.title} <span className="opacity-60">· {s.difficulty}</span>
               </button>
             ))}
+            <label className="flex cursor-pointer items-center gap-1 rounded-lg bg-primary/20 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/30">
+              <Upload className="h-3.5 w-3.5" /> Upload MIDI
+              <input
+                type="file"
+                accept=".mid,.midi,audio/midi,audio/x-midi"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (!file) return;
+                  try {
+                    const newSong = await importMidiAsSong(file);
+                    setUserSongs((prev) => [newSong, ...prev].slice(0, 8));
+                    setSong(newSong);
+                    setLearnPlaying(false);
+                  } catch (err) {
+                    alert((err as Error).message || "Failed to import MIDI");
+                  }
+                }}
+              />
+            </label>
             <div className="ml-auto flex items-center gap-2 text-xs">
               <Stat label="Hits" value={score.hit} />
               <Stat label="Combo" value={score.combo} />
